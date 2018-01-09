@@ -96,7 +96,8 @@ class apitest extends apiBaseClass {
 	function createDeal($apiMethodParams) {
         
 		$retJSON = $this->createDefaultJson();
-			
+		
+		
         if (
 			isset($apiMethodParams->Deal) 
 			
@@ -115,11 +116,11 @@ class apitest extends apiBaseClass {
 				$apiMethodParams->SellAccDt . ', ' .
 				$apiMethodParams->BuyAccCt . ', ' .
 				$apiMethodParams->BuySum . ', ' .
-				$apiMethodParams->SuyCur . ', ' .
+				$apiMethodParams->BuyCur . ', ' .
 				$apiMethodParams->BuyAccDt . ', ' .
 				$apiMethodParams->SellAccCt . ')');
 	
-			$retJSON->unlocked = 'successful';
+			$retJSON->created = 'successful';
 	
         }else{
             $retJSON->errorno = APIConstants::$ERROR_PARAMS;
