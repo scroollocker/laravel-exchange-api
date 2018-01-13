@@ -13,7 +13,7 @@ class apitest extends apiBaseClass {
         if (isset($apiMethodParams->Customer)){
             //Все ок параметры верные, их и вернем
             			
-			$result = MySQLiWorker::get_data_from_pgsql('select * from tb_accounts where customer_id = ' . $apiMethodParams->Customer);
+			$result = MySQLiWorker::get_data_from_pgsql('select * from vw_accounts where customer_id = ' . $apiMethodParams->Customer);
 				
 			$retJSON->Accounts = array();
 	
@@ -26,7 +26,9 @@ class apitest extends apiBaseClass {
 						'limit_nd' => $row[2],
 						'cur_id' => $row[3],
 						'name_v' => $row[5],
-						'num_v' => $row[6]
+						'num_v' => $row[6],
+						'state_id' => $row[7],
+						'is_loan_n' => $row[8]
 					)
 				);
 				
@@ -161,6 +163,29 @@ class apitest extends apiBaseClass {
             $retJSON->errorno = APIConstants::$ERROR_PARAMS;
         }
         return $retJSON;
+	}
+	
+	function getDealState($apiMethodParams) {
+		
+		$retJSON = $this->createDefaultJson();
+		
+		if (isset($apiMethodParams->Deal)){
+			
+			$result = MySQLiWorker::get_data_from_pgsql('select state_n, state_v from tb_deal where deal_id = ' . $apiMethodParams->Deal);
+			
+			while ($row = pg_fetch_row($result)) {
+				
+				$retJSON->state = $row[0];
+				$retJSON->msg = $row[1];
+				
+			}
+			
+			
+		} else {
+			 $retJSON->errorno = APIConstants::$ERROR_PARAMS;
+		}
+		
+		return $retJSON;
 	}
 }
 
