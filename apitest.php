@@ -99,7 +99,7 @@ class apitest extends apiBaseClass {
         
 		$retJSON = $this->createDefaultJson();
 		
-		
+		echo "!!!!";
         if (
 			isset($apiMethodParams->Deal) 
 			
@@ -172,14 +172,18 @@ class apitest extends apiBaseClass {
 		if (isset($apiMethodParams->Deal)){
 			
 			$result = MySQLiWorker::get_data_from_pgsql('select state_n, state_v from tb_deal where deal_id = ' . $apiMethodParams->Deal);
+			$i = 0;
 			
 			while ($row = pg_fetch_row($result)) {
 				
 				$retJSON->state = $row[0];
-				$retJSON->msg = $row[1];
-				
+				$retJSON->msg = trim($row[1]);
+				$i++;
 			}
 			
+			if ($i == 0) {
+				$retJSON->errorno = APIConstants::$ERROR_PARAMS;
+			}
 			
 		} else {
 			 $retJSON->errorno = APIConstants::$ERROR_PARAMS;
