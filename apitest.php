@@ -99,7 +99,7 @@ class apitest extends apiBaseClass {
         
 		$retJSON = $this->createDefaultJson();
 		
-		echo "!!!!";
+		//echo "!!!!";
         if (
 			isset($apiMethodParams->Deal) 
 			
