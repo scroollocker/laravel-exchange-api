@@ -33,7 +33,7 @@ class apitest extends apiBaseClass {
 				);
 				
 			}
-			
+			$retJSON->SqlState = pg_result_status($result);
         }else{
             $retJSON->errorno = APIConstants::$ERROR_PARAMS;
         }
@@ -68,7 +68,7 @@ class apitest extends apiBaseClass {
 			$result = MySQLiWorker::get_data_from_pgsql('select sum_lock (' . $apiMethodParams->Acc . ', ' . $apiMethodParams->Sum . ', 1)');
 	
 			$retJSON->locked = 'successful';
-	
+			$retJSON->SqlState = pg_result_status($result);
         }else{
             $retJSON->errorno = APIConstants::$ERROR_PARAMS;
         }
@@ -86,7 +86,7 @@ class apitest extends apiBaseClass {
 			$result = MySQLiWorker::get_data_from_pgsql('select sum_lock (' . $apiMethodParams->Acc . ', ' . $apiMethodParams->Sum . ', 0)');
 	
 			$retJSON->unlocked = 'successful';
-	
+			$retJSON->SqlState = pg_result_status($result);
         }else{
             $retJSON->errorno = APIConstants::$ERROR_PARAMS;
         }
@@ -123,6 +123,7 @@ class apitest extends apiBaseClass {
 				$apiMethodParams->SellAccCt . ')');
 	
 			$retJSON->created = 'successful';
+			$retJSON->SqlState = pg_result_status($result);
 	
         }else{
             $retJSON->errorno = APIConstants::$ERROR_PARAMS;
@@ -158,7 +159,7 @@ class apitest extends apiBaseClass {
 				);
 				
 			}
-			
+			$retJSON->SqlState = pg_result_status($result);
         }else{
             $retJSON->errorno = APIConstants::$ERROR_PARAMS;
         }
@@ -184,7 +185,7 @@ class apitest extends apiBaseClass {
 			if ($i == 0) {
 				$retJSON->errorno = APIConstants::$ERROR_PARAMS;
 			}
-			
+			$retJSON->SqlState = pg_result_status($result);
 		} else {
 			 $retJSON->errorno = APIConstants::$ERROR_PARAMS;
 		}
