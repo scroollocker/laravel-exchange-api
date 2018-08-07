@@ -14,7 +14,103 @@ class MySQLiWorker {
 
     //Чтобы нельзя было создать через клонирование
     private function __clone() { /* ... */
+    }<?php
+2
+class MySQLiWorker {
+3
+​
+4
+    protected static $instance;  // object instance
+5
+    public $dbName;
+6
+    public $dbHost;
+7
+    public $dbUser;
+8
+    public $dbPassword;
+9
+    public $connectLink = null;
+10
+​
+11
+    //Чтобы нельзя было создать через вызов new MySQLiWorker
+12
+    private function __construct() { /* ... */
+13
     }
+14
+​
+15
+    //Чтобы нельзя было создать через клонирование
+16
+    private function __clone() { /* ... */
+17
+    }
+18
+​
+19
+    //Чтобы нельзя было создать через unserialize
+20
+    private function __wakeup() { /* ... */
+21
+    }
+22
+​
+23
+    //Получаем объект синглтона
+24
+    public static function getInstance($dbName, $dbHost, $dbUser, $dbPassword) {
+25
+        if (is_null(self::$instance)) {
+26
+            self::$instance = new MySQLiWorker();
+27
+            self::$instance->dbName = $dbName;
+28
+            self::$instance->dbHost = $dbHost;
+29
+            self::$instance->dbUser = $dbUser;
+30
+            self::$instance->dbPassword = $dbPassword;
+31
+            self::$instance->openConnection();
+32
+        }
+33
+        return self::$instance;
+34
+    }
+35
+​
+36
+    //Определяем типы параметров запроса к базе и возвращаем строку для привязки через ->bind
+37
+    function prepareParams($params) {
+38
+        $retSTMTString = '';
+39
+        foreach ($params as $value) {
+40
+            if (is_int($value) || is_double($value)) {
+41
+                $retSTMTString.='d';
+42
+            }
+43
+            if (is_string($value)) {
+44
+                $retSTMTString.='s';
+45
+            }
+46
+        }
+47
+        return $retSTMTString;
+48
+    }
+49
+
 
     //Чтобы нельзя было создать через unserialize
     private function __wakeup() { /* ... */
@@ -90,10 +186,10 @@ class MySQLiWorker {
 	// Получить данные через postgres
 	static public function get_data_from_pgsql($query) {
 	
-		$conn = pg_connect("host=127.0.0.1 port=5432 dbname=exchange user=max password=max145236");
+		$conn = pg_connect("host=localhost port=5432 dbname=postgres user=postgres password=123");
 		
 		$result = pg_query($conn, $query);
-		
+		echo pg_last_error($conn);
 		pg_close($conn);
 		
 		return $result;
